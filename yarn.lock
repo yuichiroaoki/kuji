@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@chainlink/contracts@^0.2.1-beta.0":
+  version "0.2.1-beta.0"
+  resolved "https://registry.yarnpkg.com/@chainlink/contracts/-/contracts-0.2.1-beta.0.tgz#aff238141da6a4efec208d1f5cb527cd3c832a17"
+  integrity sha512-4j5svhpiN2cnKVvvKcxHbejvYAvWKZaWA4uNGSj+Nk/dfm9Vr8b2YtyEZPm9yoac/YGIlwaCvL2fycMQrNiK8A==
+
 "@ethereumjs/block@^3.3.0":
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/@ethereumjs/block/-/block-3.3.0.tgz#a1b3baec831c71c0d9e7f6145f25e919cff4939c"
