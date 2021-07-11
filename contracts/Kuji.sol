@@ -6,14 +6,14 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract Kuji is VRFConsumerBase {
-	using SafeMath for uint;
+    using SafeMath for uint256;
 
     bytes32 internal keyHash;
     uint256 internal fee;
 
     uint256 public randomResult;
 
-	event numberChanged(bytes32 requestId, uint256 randomness);
+    event numberChanged(bytes32 requestId, uint256 randomness);
 
     /**
      * Constructor inherits VRFConsumerBase
@@ -33,9 +33,9 @@ contract Kuji is VRFConsumerBase {
         fee = 0.1 * 10**18; // 0.1 LINK (Varies by network)
     }
 
-	function getLinkBalance() public view returns (uint linkBalance) {
-		return LINK.balanceOf(address(this));
-	}
+    function getLinkBalance() public view returns (uint256 linkBalance) {
+        return LINK.balanceOf(address(this));
+    }
 
     /**
      * Requests randomness
@@ -55,10 +55,14 @@ contract Kuji is VRFConsumerBase {
         internal
         override
     {
-		emit numberChanged(requestId, randomness);
+        emit numberChanged(requestId, randomness);
         randomResult = randomness.mod(100).add(1);
     }
 
-	// Implement a withdraw function to avoid locking your LINK in the contract
-    function withdrawLink() external {} 
+    /**
+     * Withdraw all Link
+     */
+    function withdrawLink(address recipient) external {
+        LINK.transfer(recipient, getLinkBalance());
+    }
 }
