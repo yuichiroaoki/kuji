@@ -13,7 +13,7 @@ contract Kuji is VRFConsumerBase {
 
     uint256 public randomResult;
 
-	event get_random_number(bytes32 requestId, uint256 randomness);
+	event numberChanged(bytes32 requestId, uint256 randomness);
 
     /**
      * Constructor inherits VRFConsumerBase
@@ -33,6 +33,10 @@ contract Kuji is VRFConsumerBase {
         fee = 0.1 * 10**18; // 0.1 LINK (Varies by network)
     }
 
+	function getLinkBalance() public view returns (uint linkBalance) {
+		return LINK.balanceOf(address(this));
+	}
+
     /**
      * Requests randomness
      */
@@ -51,7 +55,7 @@ contract Kuji is VRFConsumerBase {
         internal
         override
     {
-		emit get_random_number(requestId, randomness);
+		emit numberChanged(requestId, randomness);
         randomResult = randomness.mod(100).add(1);
     }
 
