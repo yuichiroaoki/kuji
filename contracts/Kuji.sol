@@ -17,6 +17,7 @@ contract Kuji is VRFConsumerBase, Ownable {
 
     mapping(bytes32 => address) public s_rollers;
     mapping(address => uint256) public s_results;
+    mapping(address => uint256) pendingWithdrawals;
 
     event DiceRolled(bytes32 indexed requestId, address indexed roller);
     event DiceLanded(bytes32 indexed requestId, uint256 indexed result);
@@ -43,14 +44,6 @@ contract Kuji is VRFConsumerBase, Ownable {
         return LINK.balanceOf(address(this));
     }
 
-    /**
-     * @notice Requests randomness
-     * @dev Warning: if the VRF response is delayed, avoid calling requestRandomness repeatedly
-     * as that would give miners/VRF operators latitude about which VRF response arrives first.
-     * @dev You must review your implementation details with extreme care.
-     *
-     * @param roller address of the roller
-     */
     function rollDice(address roller)
         public
         onlyOwner
@@ -90,6 +83,15 @@ contract Kuji is VRFConsumerBase, Ownable {
      */
     function withdrawLINK(address to, uint256 value) public onlyOwner {
         require(LINK.transfer(to, value), "Not enough LINK");
+    }
+
+    // from solidity document https://docs.soliditylang.org/en/v0.8.6/common-patterns.html
+    function withdraw() public {
+        uint256 amount = pendingWithdrawals[msg.sender];
+        // Remember to zero the pending refund before
+        // sending to prevent re-entrancy attacks
+        pendingWithdrawals[msg.sender] = 0;
+        payable(msg.sender).transfer(amount);
     }
 
     function result(address player) public view returns (string memory) {
