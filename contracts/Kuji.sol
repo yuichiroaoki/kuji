@@ -12,14 +12,11 @@ contract Kuji is VRFConsumerBase, Ownable {
     bytes32 internal keyHash;
     uint256 internal fee;
 
-    uint256 public randomResult;
     uint256 public constant WINNING_NUMBER = 7;
     uint256 public constant ROLL_IN_PROGRESS = 42;
 
     mapping(bytes32 => address) public s_rollers;
     mapping(address => uint256) public s_results;
-
-    event NumberChanged(bytes32 requestId, uint256 randomness);
 
     event DiceRolled(bytes32 indexed requestId, address indexed roller);
     event DiceLanded(bytes32 indexed requestId, uint256 indexed result);
@@ -77,8 +74,10 @@ contract Kuji is VRFConsumerBase, Ownable {
         internal
         override
     {
-        emit NumberChanged(requestId, randomness);
-        randomResult = randomness.mod(100).add(1);
+        uint256 d20Value = randomness.mod(40).add(1);
+
+        s_results[s_rollers[requestId]] = d20Value;
+        emit DiceLanded(requestId, d20Value);
     }
 
     /**
