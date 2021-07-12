@@ -6,7 +6,7 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Kuji is VRFConsumerBase, Ownable {
+contract KujiFixed is VRFConsumerBase, Ownable {
     using SafeMath for uint256;
 
     bytes32 internal keyHash;
@@ -15,7 +15,7 @@ contract Kuji is VRFConsumerBase, Ownable {
     uint256 public constant WINNING_NUMBER = 7;
     uint256 public constant ROLL_IN_PROGRESS = 42;
     bool internal locked;
-    uint public probability;
+    uint public num_of_winners;
 
     mapping(bytes32 => address) public s_rollers;
     mapping(address => uint256) public s_results;
@@ -38,13 +38,13 @@ contract Kuji is VRFConsumerBase, Ownable {
      * LINK token address:                0xa36085F69e2889c224210F603D836748e7dC0088
      * Key Hash: 0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4
      */
-    constructor(uint _probability) 
+    constructor(uint _num_of_winners) 
         VRFConsumerBase(
             0xdD3782915140c8f3b190B5D67eAc6dc5760C46E9, // VRF Coordinator
             0xa36085F69e2889c224210F603D836748e7dC0088 // LINK Token
         )
     {
-        probability = _probability;
+        num_of_winners = _num_of_winners;
         keyHash = 0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4;
         fee = 0.1 * 10**18; // 0.1 LINK (Varies by network)
     }
@@ -80,7 +80,7 @@ contract Kuji is VRFConsumerBase, Ownable {
         internal
         override
     {
-        uint256 d20Value = randomness.mod(probability).add(1);
+        uint256 d20Value = randomness.mod(num_of_winners).add(1);
 
         s_results[s_rollers[requestId]] = d20Value;
         emit DiceLanded(requestId, d20Value);
