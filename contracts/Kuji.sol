@@ -14,7 +14,7 @@ contract Kuji is VRFConsumerBase, Ownable {
 
     uint256 public constant WINNING_NUMBER = 7;
     uint256 public constant ROLL_IN_PROGRESS = 42;
-
+    bool internal locked;
     mapping(bytes32 => address) public s_rollers;
     mapping(address => uint256) public s_results;
     mapping(address => uint256) pendingWithdrawals;
@@ -22,6 +22,12 @@ contract Kuji is VRFConsumerBase, Ownable {
     event DiceRolled(bytes32 indexed requestId, address indexed roller);
     event DiceLanded(bytes32 indexed requestId, uint256 indexed result);
 
+    modifier noReentrant() {
+        require(!locked, "No re-entrancy");
+        locked = true;
+        _;
+        locked = false;
+    }
     /**
      * Constructor inherits VRFConsumerBase
      *
@@ -42,6 +48,10 @@ contract Kuji is VRFConsumerBase, Ownable {
 
     function getLinkBalance() public view returns (uint256 linkBalance) {
         return LINK.balanceOf(address(this));
+    }
+
+    function getBalance() public view returns (uint) {
+        return address(this).balance;
     }
 
     function rollDice(address roller)
@@ -77,21 +87,17 @@ contract Kuji is VRFConsumerBase, Ownable {
      * @notice Withdraw LINK from this contract.
      * @dev this is an example only, and in a real contract withdrawals should
      * happen according to the established withdrawal pattern:
-     * https://docs.soliditylang.org/en/v0.4.24/common-patterns.html#withdrawal-from-contracts
+     * from solidity document https://docs.soliditylang.org/en/v0.8.6/common-patterns.html
      * @param to the address to withdraw LINK to
      * @param value the amount of LINK to withdraw
      */
-    function withdrawLINK(address to, uint256 value) public onlyOwner {
+    function withdrawLINK(address to, uint256 value) public onlyOwner noReentrant {
         require(LINK.transfer(to, value), "Not enough LINK");
     }
 
-    // from solidity document https://docs.soliditylang.org/en/v0.8.6/common-patterns.html
-    function withdraw() public {
-        uint256 amount = pendingWithdrawals[msg.sender];
-        // Remember to zero the pending refund before
-        // sending to prevent re-entrancy attacks
-        pendingWithdrawals[msg.sender] = 0;
-        payable(msg.sender).transfer(amount);
+    function withdraw(address to, uint256 value) public payable onlyOwner noReentrant {
+        (bool sent, ) = to.call{value: value}("");
+        require(sent, "Failed to send Ether");
     }
 
     function result(address player) public view returns (string memory) {
