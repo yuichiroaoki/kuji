@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "hardhat/console.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "./BaseContract.sol";
 
-contract KujiFixed is VRFConsumerBase, Ownable {
+contract KujiFixed is VRFConsumerBase, BaseContract {
     using SafeMath for uint256;
 
     bytes32 internal keyHash;
@@ -14,7 +13,6 @@ contract KujiFixed is VRFConsumerBase, Ownable {
 
     uint256 public constant WINNING_NUMBER = 7;
     uint256 public constant ROLL_IN_PROGRESS = 42;
-    bool internal locked;
     uint public num_of_winners;
 
     mapping(bytes32 => address) public s_rollers;
@@ -22,13 +20,6 @@ contract KujiFixed is VRFConsumerBase, Ownable {
 
     event DiceRolled(bytes32 indexed requestId, address indexed roller);
     event DiceLanded(bytes32 indexed requestId, uint256 indexed result);
-
-    modifier noReentrant() {
-        require(!locked, "No re-entrancy");
-        locked = true;
-        _;
-        locked = false;
-    }
 
     /**
      * Constructor inherits VRFConsumerBase
@@ -51,10 +42,6 @@ contract KujiFixed is VRFConsumerBase, Ownable {
 
     function getLinkBalance() public view returns (uint256 linkBalance) {
         return LINK.balanceOf(address(this));
-    }
-
-    function getBalance() public view returns (uint) {
-        return address(this).balance;
     }
 
     function rollDice(address roller)
@@ -96,11 +83,6 @@ contract KujiFixed is VRFConsumerBase, Ownable {
      */
     function withdrawLINK(address to, uint256 value) public onlyOwner noReentrant {
         require(LINK.transfer(to, value), "Not enough LINK");
-    }
-
-    function withdraw(address to, uint256 value) public payable onlyOwner noReentrant {
-        (bool sent, ) = to.call{value: value}("");
-        require(sent, "Failed to send Ether");
     }
 
     function result(address player) public view returns (string memory) {

@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract BaseContract is Ownable {
 
     bool internal locked;
-    uint public num_of_winners;
 
     modifier noReentrant() {
         require(!locked, "No re-entrancy");
