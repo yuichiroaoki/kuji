@@ -26,5 +26,7 @@ describe("Base", function () {
 
 		expect(await base.owner()).to.equal(owner.address);
 
+		expect((await base.getBalance()).toNumber()).to.equal(0);
+
 	});
 });
