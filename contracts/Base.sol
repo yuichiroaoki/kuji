@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract BaseContract is Ownable {
+contract Base is Ownable {
 
     bool internal locked;
 
