@@ -5,7 +5,7 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./Base.sol";
 
-contract KujiFixed is VRFConsumerBase, BaseContract {
+contract KujiFixed is VRFConsumerBase, Base {
     using SafeMath for uint256;
 
     bytes32 internal keyHash;
