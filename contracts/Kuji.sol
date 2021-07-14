@@ -11,7 +11,7 @@ contract Kuji is VRFConsumerBase, Base {
     bytes32 internal keyHash;
     uint256 internal fee;
 
-    uint256 public constant WINNING_NUMBER = 7;
+    uint256 public constant WINNING_NUMBER = 1;
     uint256 public constant ROLL_IN_PROGRESS = 42;
     uint256 public probability;
 
@@ -68,18 +68,22 @@ contract Kuji is VRFConsumerBase, Base {
         internal
         override
     {
-        uint256 d20Value = randomness.mod(probability).add(1);
+        uint256 random_value = randomness.mod(probability).add(1);
 
         address player = s_rollers[requestId];
-        s_results[player] = d20Value;
+        s_results[player] = random_value;
 
-        if (getResult(d20Value)) {
+        emit DiceLanded(requestId, random_value);
+    }
+
+    function give_prize(address player) public {
+
+        if (getResult(s_results[player])) {
             withdrawLINK(player, getLinkBalance());
 
             emit PrizeSent(player, getLinkBalance());
         }
 
-        emit DiceLanded(requestId, d20Value);
     }
 
     /**
