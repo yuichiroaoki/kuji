@@ -76,7 +76,7 @@ contract Kuji is VRFConsumerBase, Base {
         emit DiceLanded(requestId, random_value);
     }
 
-    function give_prize(address player) public {
+    function givePrize(address player) public {
 
         if (getResult(s_results[player])) {
             withdrawLINK(player, getLinkBalance());
