@@ -21,7 +21,16 @@ task("accounts", "Prints the list of accounts", async (args, hre) => {
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
-module.exports = {
+
+const local = {
+  solidity: "0.8.4",
+  networks: {
+    hardhat: {
+    },
+  },
+};
+
+const main = {
   solidity: "0.8.4",
   networks: {
     hardhat: {
@@ -42,4 +51,8 @@ module.exports = {
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY
   },
-};
+}
+
+const config = process.env.ALCHEMY_KOVAN_RPC_URL ? main : local;
+
+module.exports = config;
