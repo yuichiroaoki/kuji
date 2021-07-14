@@ -24,6 +24,12 @@ task("accounts", "Prints the list of accounts", async (args, hre) => {
 module.exports = {
   solidity: "0.8.4",
   networks: {
+    hardhat: {
+      forking: {
+        url: process.env.ALCHEMY_MAINNET_RPC_URL,
+        blockNumber: 12821544
+      }
+    },
     kovan: {
       url: process.env.ALCHEMY_KOVAN_RPC_URL,
       accounts: [`0x${process.env.PRIVATE_KEY}`]

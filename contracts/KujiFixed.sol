@@ -11,8 +11,9 @@ contract KujiFixed is VRFConsumerBase, Base {
     bytes32 internal keyHash;
     uint256 internal fee;
 
-    uint256 public constant WINNING_NUMBER = 7;
+    uint256 public constant WINNING_NUMBER = 1;
     uint256 public constant ROLL_IN_PROGRESS = 42;
+    address[] players;
     uint public num_of_winners;
 
     mapping(bytes32 => address) public s_rollers;
@@ -42,6 +43,15 @@ contract KujiFixed is VRFConsumerBase, Base {
 
     function getLinkBalance() public view returns (uint256 linkBalance) {
         return LINK.balanceOf(address(this));
+    }
+    
+    function register(address _player) public returns (bool) {
+        players.push(_player);
+        return true;
+    }
+
+    function countPlayers() public view returns (uint256) {
+        return players.length;
     }
 
     function rollDice(address roller)
