@@ -23,6 +23,16 @@ task("accounts", "Prints the list of accounts", async (args, hre) => {
  */
 module.exports = {
   solidity: "0.8.4",
+  networks: {
+    kovan: {
+      url: process.env.ALCHEMY_KOVAN_RPC_URL,
+      accounts: [`0x${process.env.PRIVATE_KEY}`]
+    },
+    rinkeby: {
+      url: process.env.ALCHEMY_RINKEBY_RPC_URL,
+      accounts: [`0x${process.env.PRIVATE_KEY}`]
+    },
+  },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY
   },
