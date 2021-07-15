@@ -1,11 +1,10 @@
-import { ethers, network } from "hardhat";
 import { task } from "hardhat/config";
 let { networkConfig, getNetworkIdFromName } = require('../helper-hardhat-config')
 
 task("fund-link", "Funds a contract with LINK")
     .addParam("contract", "The address of the contract that requires LINK")
     .addOptionalParam("linkaddress", "Set the LINK token address")
-    .setAction(async (taskArgs) => {
+    .setAction(async (taskArgs, { ethers, network }) => {
         const contractAddr = taskArgs.contract
         let networkId = await getNetworkIdFromName(network.name)
 

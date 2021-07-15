@@ -1,6 +1,4 @@
-import { ethers } from "hardhat"
-
-const networkConfig = {
+const networkConfig:any = {
     default: {
         name: 'hardhat',
         fee: '100000000000000000',
@@ -51,7 +49,7 @@ const networkConfig = {
 
 const developmentChains = ["hardhat", "localhost"]
 
-const getNetworkIdFromName = async (networkIdName) => {
+const getNetworkIdFromName = async (networkIdName: string) => {
     for (const id in networkConfig) {
         if (networkConfig[id]['name'] == networkIdName) {
             return id
@@ -83,7 +81,7 @@ const getNetworkIdFromName = async (networkIdName) => {
 //         console.log("npx hardhat fund-link --contract " + contractAddr + " --network " + networkName + additionalMessage)
 //         return false
 //     }
-}
+// }
 
 module.exports = {
     networkConfig,

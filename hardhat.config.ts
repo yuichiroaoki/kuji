@@ -5,8 +5,9 @@ import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-ethers";
 import '@typechain/hardhat'
 
-// import "./tasks/fund-link";
+import "./tasks/fund-link";
 import "./tasks/balance";
+import "./tasks/block-number";
 import "./tasks/accounts";
 
 

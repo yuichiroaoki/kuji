@@ -11,6 +11,7 @@
     "compile": "npx hardhat compile",
     "accounts": "npx hardhat accounts",
     "balance": "npx hardhat balance --account",
+    "block-number": "npx hardhat block-number",
     "deploy": "npx hardhat run --network kovan scripts/deploy.ts",
     "test": "npx hardhat test",
     "account": "npx hardhat accounts"
