@@ -86,14 +86,7 @@ contract Kuji is VRFConsumerBase, Base {
 
     }
 
-    /**
-     * @notice Withdraw LINK from this contract.
-     * @dev this is an example only, and in a real contract withdrawals should
-     * happen according to the established withdrawal pattern:
-     * from solidity document https://docs.soliditylang.org/en/v0.8.6/common-patterns.html
-     * @param to the address to withdraw LINK to
-     * @param value the amount of LINK to withdraw
-     */
+    // from solidity document https://docs.soliditylang.org/en/v0.8.6/common-patterns.html
     function withdrawLINK(address to, uint256 value)
         public
         onlyOwner
