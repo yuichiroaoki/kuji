@@ -5,10 +5,11 @@ import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-ethers";
 import '@typechain/hardhat'
 
+import "./tasks/accounts";
 import "./tasks/fund-link";
 import "./tasks/balance";
 import "./tasks/block-number";
-import "./tasks/accounts";
+import "./tasks/withdraw-link";
 
 
 // You need to export an object to set up your config

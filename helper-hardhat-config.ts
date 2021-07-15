@@ -1,4 +1,4 @@
-const networkConfig:any = {
+export const networkConfig:any = {
     default: {
         name: 'hardhat',
         fee: '100000000000000000',
@@ -47,9 +47,9 @@ const networkConfig:any = {
     }
 }
 
-const developmentChains = ["hardhat", "localhost"]
+export const developmentChains = ["hardhat", "localhost"]
 
-const getNetworkIdFromName = async (networkIdName: string) => {
+export const getNetworkIdFromName = async (networkIdName: string) => {
     for (const id in networkConfig) {
         if (networkConfig[id]['name'] == networkIdName) {
             return id
@@ -58,7 +58,7 @@ const getNetworkIdFromName = async (networkIdName: string) => {
     return null
 }
 
-// const autoFundCheck = async (contractAddr, networkName, linkTokenAddress, additionalMessage) => {
+// export const autoFundCheck = async (contractAddr, networkName, linkTokenAddress, additionalMessage) => {
 //     const chainId = await getChainId()
 //     console.log("Checking to see if contract can be auto-funded with LINK:")
 //     const amount = networkConfig[chainId]['fundAmount']
@@ -82,10 +82,3 @@ const getNetworkIdFromName = async (networkIdName: string) => {
 //         return false
 //     }
 // }
-
-module.exports = {
-    networkConfig,
-    getNetworkIdFromName,
-    // autoFundCheck,
-    developmentChains
-}
