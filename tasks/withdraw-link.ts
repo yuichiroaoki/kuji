@@ -13,7 +13,7 @@ task("withdraw-link", "Returns any LINK left in deployed contract")
         const signer = accounts[0]
 
         //First, lets see if there is any LINK to withdraw
-        const linkTokenAddress = networkConfig[networkId]['linkToken'] || taskArgs.linkaddress
+        const linkTokenAddress = networkId ? networkConfig[networkId]['linkToken'] : taskArgs.linkaddress
         const LinkToken = await ethers.getContractFactory("LinkToken")
         const linkTokenContract = new ethers.Contract(linkTokenAddress, LinkToken.interface, signer)
         const balanceHex = await linkTokenContract.balanceOf(contractAddr)
