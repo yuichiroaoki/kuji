@@ -9,6 +9,7 @@
     "build": "yarn clean && yarn compile",
     "clean": "npx hardhat clean",
     "compile": "npx hardhat compile",
+    "accounts": "npx hardhat accounts",
     "deploy": "npx hardhat run --network kovan scripts/deploy.ts",
     "test": "npx hardhat test",
     "account": "npx hardhat accounts"

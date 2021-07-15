@@ -1,18 +1,12 @@
 import { config as dotEnvConfig } from "dotenv";
 dotEnvConfig();
 import "@nomiclabs/hardhat-etherscan";
-import { task } from "hardhat/config";
 import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-ethers";
 import '@typechain/hardhat'
 
-task("accounts", "Prints the list of accounts", async (args, hre) => {
-  const accounts = await hre.ethers.getSigners();
-
-  for (const account of accounts) {
-    console.log(account.address);
-  }
-});
+// import "./tasks/fund-link";
+import "./tasks/accounts";
 
 
 // You need to export an object to set up your config
@@ -30,15 +24,15 @@ const local: import('hardhat/config').HardhatUserConfig = {
   },
 };
 
-const main = {
+const main: import('hardhat/config').HardhatUserConfig = {
   solidity: "0.8.4",
   networks: {
-    hardhat: {
-      forking: {
-        url: process.env.ALCHEMY_MAINNET_RPC_URL,
-        blockNumber: 12821544
-      }
-    },
+    // hardhat: {
+    //   forking: {
+    //     url: process.env.ALCHEMY_MAINNET_RPC_URL,
+    //     blockNumber: 12821544
+    //   }
+    // },
     kovan: {
       url: process.env.ALCHEMY_KOVAN_RPC_URL,
       accounts: [`0x${process.env.PRIVATE_KEY}`]
