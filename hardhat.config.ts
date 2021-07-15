@@ -6,6 +6,7 @@ import "@nomiclabs/hardhat-ethers";
 import '@typechain/hardhat'
 
 // import "./tasks/fund-link";
+import "./tasks/balance";
 import "./tasks/accounts";
 
 
