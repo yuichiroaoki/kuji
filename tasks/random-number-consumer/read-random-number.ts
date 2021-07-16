@@ -24,5 +24,3 @@ task("read-random-number", "Reads the random number returned to a contract by Ch
             console.log("You'll have to manually update the value since you're on a local chain!")
         }
     })
-
-module.exports = {}

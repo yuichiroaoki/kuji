@@ -28,7 +28,16 @@ const local: import('hardhat/config').HardhatUserConfig = {
 };
 
 const main: import('hardhat/config').HardhatUserConfig = {
-  solidity: "0.8.4",
+  solidity: {
+    compilers: [
+      {
+        version: "0.8.4",
+      },
+      {
+        version: "0.6.6"
+      }
+    ]
+  },
   networks: {
     // hardhat: {
     //   forking: {
