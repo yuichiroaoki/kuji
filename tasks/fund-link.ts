@@ -26,5 +26,3 @@ task("fund-link", "Funds a contract with LINK")
         console.log('Contract ' + contractAddr + ' funded with ' + fundAmount / Math.pow(10, 18) + ' LINK. Transaction Hash: ' + transferTransaction.hash)
 
     })
-
-module.exports = {}

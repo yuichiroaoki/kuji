@@ -33,5 +33,3 @@ task("withdraw-link", "Returns any LINK left in deployed contract")
         }
 
     })
-
-module.exports = {}
