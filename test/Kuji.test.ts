@@ -6,6 +6,7 @@ import { Kuji__factory, Kuji } from "../typechain";
 describe("Kuji", function () {
 
 	let kuji: Kuji;
+	let linkToken: any;
 	let owner: SignerWithAddress;
 	let addr1: SignerWithAddress;
 	let addr2: SignerWithAddress
@@ -27,7 +28,7 @@ describe("Kuji", function () {
 
 		const LinkToken = await ethers.getContractFactory("LinkToken");
 		const totalSupply = (10 ** 9).toString()
-		const linkToken = await LinkToken.deploy(
+		linkToken = await LinkToken.deploy(
 			ethers.utils.parseEther(totalSupply),
 		)
 
@@ -53,7 +54,20 @@ describe("Kuji", function () {
 
 	});
 
-	it("Balance", async () => {
+	it("Should increase Link balance", async () => {
+
+		expect((await kuji.getLinkBalance())).to.equal(ethers.BigNumber.from(0));
+
+		await linkToken.transfer(kuji.address, ethers.utils.parseEther("1.0"))
+
+		expect((await kuji.getLinkBalance())).to.equal(ethers.utils.parseEther("1.0"));
+
+	})
+
+	it('Should successfully send Link tokens', async () => {
+
+		await linkToken.transfer(kuji.address, ethers.utils.parseEther("1.0"))
+		await kuji.withdrawLINK(owner.address, ethers.utils.parseEther("1.0"))
 
 		expect((await kuji.getLinkBalance())).to.equal(ethers.BigNumber.from(0));
 
