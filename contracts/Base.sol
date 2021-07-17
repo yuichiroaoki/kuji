@@ -7,11 +7,17 @@ contract Base is Ownable {
 
     bool internal locked;
 
+    event Received(address, uint);
+
     modifier noReentrant() {
         require(!locked, "No re-entrancy");
         locked = true;
         _;
         locked = false;
+    }
+
+    receive() external payable {
+        emit Received(msg.sender, msg.value);
     }
 
     function getBalance() public view returns (uint) {

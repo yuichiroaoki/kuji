@@ -22,23 +22,15 @@ contract Kuji is VRFConsumerBase, Base {
     event DiceLanded(bytes32 indexed requestId, uint256 indexed result);
     event PrizeSent(address indexed winner, uint256 amount);
 
-    /**
-     * Constructor inherits VRFConsumerBase
-     *
-     * Network: Kovan
-     * Chainlink VRF Coordinator address: 0xdD3782915140c8f3b190B5D67eAc6dc5760C46E9
-     * LINK token address:                0xa36085F69e2889c224210F603D836748e7dC0088
-     * Key Hash: 0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4
-     */
-    constructor(uint256 _probability)
-        VRFConsumerBase(
-            0xdD3782915140c8f3b190B5D67eAc6dc5760C46E9, // VRF Coordinator
-            0xa36085F69e2889c224210F603D836748e7dC0088 // LINK Token
-        )
-    {
+    constructor(
+        address vrfCoordinator,
+        address link,
+        bytes32 _keyHash,
+        uint256 _probability
+    ) VRFConsumerBase(vrfCoordinator, link) {
+        keyHash = _keyHash;
+        fee = 0.1 * 10 ** 18; // 0.1 LINK (Varies by network)
         probability = _probability;
-        keyHash = 0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4;
-        fee = 0.1 * 10**18; // 0.1 LINK (Varies by network)
     }
 
     function getLinkBalance() public view returns (uint256 linkBalance) {
@@ -77,13 +69,11 @@ contract Kuji is VRFConsumerBase, Base {
     }
 
     function givePrize(address player) public {
-
         if (getResult(s_results[player])) {
             withdrawLINK(player, getLinkBalance());
 
             emit PrizeSent(player, getLinkBalance());
         }
-
     }
 
     // from solidity document https://docs.soliditylang.org/en/v0.8.6/common-patterns.html
