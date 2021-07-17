@@ -23,25 +23,7 @@ describe("Base", () => {
 
 	})
 
-	it("Owner", async () => {
-
-		expect(await base.owner()).to.equal(owner.address);
-
-		const transactionHash = await owner.sendTransaction({
-			to: base.address,
-			value: ethers.utils.parseEther("1.0"), // Sends exactly 1.0 ether
-		});
-
-		await expect(base.withdraw(owner.address, ethers.utils.parseEther("1.0"),
-			{ from: addr1.toString() })).to.be.reverted;
-
-		await base.withdraw(owner.address, ethers.utils.parseEther("1.0"));
-
-		expect((await base.getBalance())).to.equal(ethers.BigNumber.from(0));
-
-	});
-
-	it("Balance", async () => {
+	it("Should increase the balance of the contract", async () => {
 
 		expect((await base.getBalance())).to.equal(ethers.BigNumber.from(0));
 
@@ -53,4 +35,33 @@ describe("Base", () => {
 		expect((await base.getBalance())).to.equal(ethers.utils.parseEther("1.0"));
 
 	})
+
+	it("Should be reverted because it is not called by the owner", async () => {
+
+		expect(await base.owner()).to.equal(owner.address);
+
+		const transactionHash = await owner.sendTransaction({
+			to: base.address,
+			value: ethers.utils.parseEther("1.0"), // Sends exactly 1.0 ether
+		});
+
+		await expect(base.withdraw(owner.address, ethers.utils.parseEther("1.0"),
+			{ from: addr1.toString() })).to.be.reverted;
+
+	});
+
+
+	it("Should be able to withdraw ether in the contract", async () => {
+
+		const transactionHash = await owner.sendTransaction({
+			to: base.address,
+			value: ethers.utils.parseEther("1.0"), // Sends exactly 1.0 ether
+		});
+
+		await base.withdraw(owner.address, ethers.utils.parseEther("1.0"));
+
+		expect((await base.getBalance())).to.equal(ethers.BigNumber.from(0));
+
+	});
+
 });

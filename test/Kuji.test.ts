@@ -46,14 +46,6 @@ describe("Kuji", function () {
 
 	})
 
-	it("Owner", async function () {
-
-		expect(await kuji.owner()).to.equal(owner.address);
-
-		expect((await kuji.getBalance()).toNumber()).to.equal(0);
-
-	});
-
 	it("Should increase Link balance", async () => {
 
 		expect((await kuji.getLinkBalance())).to.equal(ethers.BigNumber.from(0));
@@ -72,4 +64,5 @@ describe("Kuji", function () {
 		expect((await kuji.getLinkBalance())).to.equal(ethers.BigNumber.from(0));
 
 	})
+
 });
