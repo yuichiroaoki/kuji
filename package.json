@@ -10,7 +10,6 @@
     "clean": "npx hardhat clean",
     "compile": "npx hardhat compile",
     "accounts": "npx hardhat accounts",
-    "node": "npx hardhat node",
     "balance": "npx hardhat balance --account",
     "block-number": "npx hardhat block-number",
     "deploy": "npx hardhat run --network kovan scripts/deploy.ts",
