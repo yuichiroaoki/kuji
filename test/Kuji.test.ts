@@ -19,14 +19,26 @@ describe("Kuji", function () {
 	beforeEach(async () => {
 		[owner, addr1, addr2, ...addrs] = await ethers.getSigners();
 
+		const VRFConsumer = await ethers.getContractFactory("VRFConsumer");
+		const vrfConsumer = await VRFConsumer.deploy(
+			VRFCoordinator,
+			linkAddress,
+		)
+
+		const LinkToken = await ethers.getContractFactory("LinkToken");
+		const totalSupply = (10 ** 9).toString()
+		const linkToken = await LinkToken.deploy(
+			ethers.utils.parseEther(totalSupply),
+		)
+
 		const kujiFactory = (await ethers.getContractFactory(
 			"Kuji", owner
 		)) as Kuji__factory;
 		kuji = await kujiFactory.deploy(
-		VRFCoordinator,
-		linkAddress,
-		keyHash,
-		probability
+			vrfConsumer.address,
+			linkToken.address,
+			keyHash,
+			probability
 		);
 
 		await kuji.deployed();
@@ -40,4 +52,10 @@ describe("Kuji", function () {
 		expect((await kuji.getBalance()).toNumber()).to.equal(0);
 
 	});
+
+	it("Balance", async () => {
+
+		expect((await kuji.getLinkBalance())).to.equal(ethers.BigNumber.from(0));
+
+	})
 });
