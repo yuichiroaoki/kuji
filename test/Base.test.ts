@@ -44,8 +44,8 @@ describe("Base", () => {
 			value: ethers.utils.parseEther("1.0"), // Sends exactly 1.0 ether
 		});
 
-		await expect(base.withdraw(owner.address, ethers.utils.parseEther("1.0"),
-			{ from: addr1.toString() })).to.be.reverted;
+		await expect(base.connect(addr1).withdraw(owner.address, ethers.utils.parseEther("1.0")))
+			.to.be.reverted;
 
 	});
 
