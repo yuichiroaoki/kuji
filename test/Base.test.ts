@@ -3,7 +3,6 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { Base__factory, Base } from "../typechain";
 
-
 describe("Base", () => {
 
 	let base: Base;
@@ -51,7 +50,7 @@ describe("Base", () => {
 	});
 
 
-	it("Should be able to withdraw ether in the contract", async () => {
+	it("Should decrease the balance of the contract", async () => {
 
 		const transactionHash = await owner.sendTransaction({
 			to: base.address,
